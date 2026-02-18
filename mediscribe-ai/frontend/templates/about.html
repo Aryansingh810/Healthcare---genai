@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About – MediScribe AI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#2563EB',
+                        background: '#F8FAFC',
+                        text: '#0F172A'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-[#F8FAFC] text-[#0F172A] antialiased">
+    <!-- Navbar -->
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-[#F8FAFC] border-b border-[#E2E8F0]">
+        <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+            <a href="/" class="text-xl font-semibold text-[#0F172A]">MediScribe AI</a>
+            <div class="flex items-center gap-8">
+                <a href="/" class="text-[#0F172A] hover:text-[#2563EB] transition-colors">Home</a>
+                <a href="/about" class="text-[#2563EB] font-medium">About</a>
+                <a href="/workspace" class="bg-[#2563EB] text-white px-4 py-2 rounded-md font-medium hover:opacity-90 transition-opacity">Generate Summary</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Content -->
+    <main class="pt-32 pb-20 px-6">
+        <div class="max-w-3xl mx-auto">
+            <h1 class="text-3xl font-bold text-[#0F172A] mb-12">About MediScribe AI</h1>
+
+            <section class="mb-12">
+                <h2 class="text-xl font-semibold text-[#2563EB] mb-4">Purpose</h2>
+                <p class="text-[#0F172A] leading-relaxed">
+                    MediScribe AI is a specialized Generative AI application for healthcare professionals. It converts raw patient inputs—symptoms, medical reports, and clinical observations—into high-quality, professional clinical summaries suitable for documentation and care coordination.
+                </p>
+            </section>
+
+            <section class="mb-12">
+                <h2 class="text-xl font-semibold text-[#2563EB] mb-4">Problems in Manual Healthcare Documentation</h2>
+                <p class="text-[#0F172A] leading-relaxed mb-4">
+                    Healthcare providers spend significant time on administrative tasks. Manual documentation leads to:
+                </p>
+                <ul class="list-disc list-inside text-[#0F172A] space-y-2 ml-2">
+                    <li>Inconsistent formatting across notes and reports</li>
+                    <li>Delays in patient record updates</li>
+                    <li>Higher risk of human error and omissions</li>
+                    <li>Less time available for direct patient care</li>
+                </ul>
+            </section>
+
+            <section class="mb-12">
+                <h2 class="text-xl font-semibold text-[#2563EB] mb-4">How Generative AI Helps Doctors</h2>
+                <p class="text-[#0F172A] leading-relaxed">
+                    By leveraging large language models and vector databases, MediScribe AI standardizes clinical summaries, maintains a professional medical tone, and structures output with clear headings such as Chief Complaints, Clinical Findings, Assessment, and Recommendations. Doctors can focus on patient care while the system handles documentation support.
+                </p>
+            </section>
+
+            <section class="mb-12">
+                <h2 class="text-xl font-semibold text-[#2563EB] mb-4">Accuracy, Consistency & Time Savings</h2>
+                <p class="text-[#0F172A] leading-relaxed">
+                    Accuracy is paramount in healthcare. MediScribe AI uses formal medical terminology, avoids unsupported assumptions, and produces consistent formatting. This reduces documentation time and supports better care continuity across providers.
+                </p>
+            </section>
+
+            <section>
+                <h2 class="text-xl font-semibold text-[#2563EB] mb-4">Tech Stack</h2>
+                <p class="text-[#0F172A] leading-relaxed">
+                    MediScribe AI is built with Python and Flask on the backend. It uses a Vector Database (ChromaDB) for storing and retrieving patient data, and the Google Gemini API for generating clinical summaries. The frontend uses HTML and Tailwind CSS for a clean, minimal interface.
+                </p>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-[#E2E8F0] py-6">
+        <div class="max-w-6xl mx-auto px-6 flex items-center justify-between">
+            <span class="font-semibold text-[#0F172A]">MediScribe AI</span>
+            <span class="text-sm text-[#64748B]">Healthcare documentation, simplified</span>
+        </div>
+    </footer>
+</body>
+</html>
