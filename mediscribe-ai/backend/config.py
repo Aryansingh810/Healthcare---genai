@@ -11,11 +11,10 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent
 VECTOR_DB_PATH = BASE_DIR / "vector_db" / "patient_records"
 
-# Grok API - Load from environment (never hardcode)
-# Point GROK_API_URL to your Grok-compatible endpoint.
-GROK_API_KEY = os.getenv("GROK_API_KEY", "")
-GROK_MODEL = os.getenv("GROK_MODEL", "grok-1")
-GROK_API_URL = os.getenv("GROK_API_URL", "https://api.x.ai/v1/chat/completions")
+# Groq API - Load from environment (never hardcode)
+GROQ_API_KEY = os.getenv("GROQ_API_KEY", "")
+GROQ_MODEL = os.getenv("GROQ_MODEL", "llama3-70b-8192")
+GROQ_API_URL = os.getenv("GROQ_API_URL", "https://api.groq.com/openai/v1/chat/completions")
 
 # Vector Database - ChromaDB by default (easy to swap for FAISS)
 VECTOR_DB_TYPE = os.getenv("VECTOR_DB_TYPE", "chromadb")

@@ -13,7 +13,7 @@ from reportlab.pdfgen import canvas
 
 from config import BASE_DIR
 from services.vector_service import store_patient_data, retrieve_patient_data
-from services.llm_service import generate_summary, GrokAPIError
+from services.llm_service import generate_summary, GroqAPIError
 
 generate_bp = Blueprint("generate", __name__)
 
@@ -36,14 +36,20 @@ def _generate_pdf_report(summary_text: str) -> str:
     margin_x = 72
     y = height - margin_x
 
-    # Header
-    c.setFont("Helvetica-Bold", 14)
-    c.drawString(margin_x, y, "MediScribe AI – Patient Summary Report")
-    y -= 24
+    # Fixed PDF format as specified
+    lines = [
+        "MediScribe AI – Patient Summary Report",
+        "",
+        "Chief Complaints:",
+        "Clinical Findings:",
+        "Assessment:",
+        "Recommendations:",
+        "",
+        f"Generated On: {datetime.utcnow().isoformat()} UTC",
+    ]
 
-    # Body content (summary text)
     c.setFont("Helvetica", 11)
-    for line in summary_text.splitlines() + ["" , f"Generated On: {datetime.utcnow().isoformat()} UTC"]:
+    for line in lines:
         if y < margin_x:
             c.showPage()
             y = height - margin_x
@@ -88,7 +94,7 @@ def generate():
         if not retrieved_text:
             retrieved_text = patient_input  # Fallback if DB empty (first run)
         
-        # Step 3: Generate summary via LLM (Grok)
+        # Step 3: Generate summary via LLM
         summary = generate_summary(retrieved_text)
 
         # Step 4: Generate PDF report
@@ -100,8 +106,8 @@ def generate():
             "pdf_path": pdf_path,
         }), 200
         
-    except GrokAPIError as e:
-        # Handle Grok API errors with proper status codes
+    except GroqAPIError as e:
+        # Handle Groq API errors with proper status codes
         return jsonify({
             "error": e.message,
             "error_code": e.error_code
