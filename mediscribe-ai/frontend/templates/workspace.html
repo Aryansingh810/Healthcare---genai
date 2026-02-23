@@ -58,6 +58,11 @@
             <div id="outputSection" class="mt-8 hidden">
                 <h3 class="text-lg font-semibold text-[#2563EB] mb-3">Patient Summary</h3>
                 <div id="summaryOutput" class="p-5 rounded-xl border border-[#CBD5E1] bg-white text-[#0F172A] whitespace-pre-wrap font-mono text-sm"></div>
+                <div id="pdfLinkSection" class="mt-4 hidden">
+                    <a id="pdfLink" href="#" target="_blank" class="text-[#2563EB] text-sm underline">
+                        Download PDF report
+                    </a>
+                </div>
             </div>
 
             <div id="errorSection" class="mt-6 hidden">
@@ -79,6 +84,8 @@
         const submitBtn = document.getElementById('submitBtn');
         const outputSection = document.getElementById('outputSection');
         const summaryOutput = document.getElementById('summaryOutput');
+        const pdfLinkSection = document.getElementById('pdfLinkSection');
+        const pdfLink = document.getElementById('pdfLink');
         const errorSection = document.getElementById('errorSection');
         const loadingIndicator = document.getElementById('loadingIndicator');
 
@@ -117,14 +124,31 @@
                 const data = await res.json();
 
                 if (!res.ok) {
-                    showError(data.error || 'An error occurred.');
+                    // Handle specific error codes
+                    let errorMsg = data.error || 'An error occurred.';
+                    
+                    if (res.status === 429) {
+                        errorMsg = 'API quota exceeded. Please check your Grok API plan and billing.';
+                    } else if (res.status === 401) {
+                        errorMsg = 'Invalid API key. Please check your GROK_API_KEY configuration.';
+                    }
+                    
+                    showError(errorMsg);
                     return;
                 }
 
                 summaryOutput.textContent = data.summary || 'No summary generated.';
+
+                if (data.pdf_path) {
+                    pdfLink.href = data.pdf_path;
+                    pdfLinkSection.classList.remove('hidden');
+                } else {
+                    pdfLinkSection.classList.add('hidden');
+                }
+
                 outputSection.classList.remove('hidden');
             } catch (err) {
-                showError('Network error. Please try again.');
+                showError('Network error. Please check your connection and try again.');
             } finally {
                 setLoading(false);
             }

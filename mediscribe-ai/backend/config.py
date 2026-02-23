@@ -11,10 +11,11 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent
 VECTOR_DB_PATH = BASE_DIR / "vector_db" / "patient_records"
 
-# Google Gemini API - Load from environment (never hardcode)
-GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
-GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-1.5-flash")
-GEMINI_EMBEDDING_MODEL = os.getenv("GEMINI_EMBEDDING_MODEL", "models/text-embedding-004")
+# Grok API - Load from environment (never hardcode)
+# Point GROK_API_URL to your Grok-compatible endpoint.
+GROK_API_KEY = os.getenv("GROK_API_KEY", "")
+GROK_MODEL = os.getenv("GROK_MODEL", "grok-1")
+GROK_API_URL = os.getenv("GROK_API_URL", "https://api.x.ai/v1/chat/completions")
 
 # Vector Database - ChromaDB by default (easy to swap for FAISS)
 VECTOR_DB_TYPE = os.getenv("VECTOR_DB_TYPE", "chromadb")

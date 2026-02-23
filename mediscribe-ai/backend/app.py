@@ -10,6 +10,7 @@ from flask import Flask, render_template, send_from_directory
 from flask_cors import CORS
 from dotenv import load_dotenv
 
+from config import BASE_DIR
 from routes.store import store_bp
 from routes.generate import generate_bp
 
@@ -51,6 +52,15 @@ def assets(filename):
     """Static assets."""
     return send_from_directory(
         Path(app.static_folder) / "assets",
+        filename
+    )
+
+
+@app.route("/reports/<path:filename>")
+def reports(filename):
+    """Generated PDF reports."""
+    return send_from_directory(
+        BASE_DIR / "reports",
         filename
     )
 

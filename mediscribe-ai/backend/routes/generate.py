@@ -1,13 +1,60 @@
 """
 MediScribe AI - Generate Summary Route
-Retrieves data from vector DB, passes to Gemini, returns clinical summary.
+Retrieves data from vector DB, passes to LLM, returns clinical summary and PDF path.
 """
 
+import uuid
+from datetime import datetime
+from pathlib import Path
+
 from flask import Blueprint, request, jsonify
+from reportlab.lib.pagesizes import A4
+from reportlab.pdfgen import canvas
+
+from config import BASE_DIR
 from services.vector_service import store_patient_data, retrieve_patient_data
-from services.llm_service import generate_summary
+from services.llm_service import generate_summary, GrokAPIError
 
 generate_bp = Blueprint("generate", __name__)
+
+
+def _generate_pdf_report(summary_text: str) -> str:
+    """
+    Generate a PDF report for the given summary text.
+
+    Saves to backend/reports/ and returns the web path (/reports/<filename>.pdf).
+    """
+    reports_dir = BASE_DIR / "reports"
+    reports_dir.mkdir(parents=True, exist_ok=True)
+
+    filename = f"summary_{uuid.uuid4().hex}.pdf"
+    file_path = reports_dir / filename
+
+    c = canvas.Canvas(str(file_path), pagesize=A4)
+    width, height = A4
+
+    margin_x = 72
+    y = height - margin_x
+
+    # Header
+    c.setFont("Helvetica-Bold", 14)
+    c.drawString(margin_x, y, "MediScribe AI – Patient Summary Report")
+    y -= 24
+
+    # Body content (summary text)
+    c.setFont("Helvetica", 11)
+    for line in summary_text.splitlines() + ["" , f"Generated On: {datetime.utcnow().isoformat()} UTC"]:
+        if y < margin_x:
+            c.showPage()
+            y = height - margin_x
+            c.setFont("Helvetica", 11)
+        c.drawString(margin_x, y, line)
+        y -= 14
+
+    c.save()
+
+    # Web path exposed to frontend
+    return f"/reports/{filename}"
 
 
 @generate_bp.route("/generate-summary", methods=["POST"])
@@ -19,8 +66,9 @@ def generate():
     Workflow:
     1. Store patient input in vector DB
     2. Retrieve relevant data from vector DB
-    3. Generate summary via Gemini
-    4. Return structured response
+    3. Generate summary via LLM
+    4. Generate PDF report for summary
+    5. Return structured response
     """
     data = request.get_json() or {}
     patient_input = data.get("patient_input", "").strip()
@@ -40,15 +88,31 @@ def generate():
         if not retrieved_text:
             retrieved_text = patient_input  # Fallback if DB empty (first run)
         
-        # Step 3: Generate summary via Gemini
+        # Step 3: Generate summary via LLM (Grok)
         summary = generate_summary(retrieved_text)
+
+        # Step 4: Generate PDF report
+        pdf_path = _generate_pdf_report(summary)
         
         return jsonify({
             "status": "success",
-            "summary": summary
+            "summary": summary,
+            "pdf_path": pdf_path,
         }), 200
+        
+    except GrokAPIError as e:
+        # Handle Grok API errors with proper status codes
+        return jsonify({
+            "error": e.message,
+            "error_code": e.error_code
+        }), e.status_code or 500
         
     except ValueError as e:
         return jsonify({"error": str(e)}), 400
+        
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        # Generic error handling
+        error_msg = str(e)
+        return jsonify({
+            "error": f"An error occurred: {error_msg}"
+        }), 500
