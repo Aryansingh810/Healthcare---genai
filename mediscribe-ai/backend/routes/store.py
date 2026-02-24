@@ -1,7 +1,4 @@
-"""
-MediScribe AI - Store Route
-Accepts raw patient input, converts to embeddings, stores in vector DB.
-"""
+
 
 from flask import Blueprint, request, jsonify
 from services.vector_service import store_patient_data
