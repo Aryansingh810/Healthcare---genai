@@ -103,6 +103,4 @@ Assessment:
 Recommendations:
 ```
 
-## License
 
-MIT
