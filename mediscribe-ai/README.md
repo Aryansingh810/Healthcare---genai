@@ -1,6 +1,6 @@
 # MediScribe AI
 
-AI-powered healthcare content generator that converts raw patient inputs (symptoms, reports, observations) into professional clinical summaries using **Google Gemini API** and a **Vector Database** (ChromaDB).
+AI-powered healthcare content generator that converts raw patient inputs (symptoms, reports, observations) into professional clinical summaries using **Groq API** and a **Vector Database** (ChromaDB).
 
 ## Features
 
@@ -14,7 +14,7 @@ AI-powered healthcare content generator that converts raw patient inputs (sympto
 
 - **Frontend:** HTML, Tailwind CSS
 - **Backend:** Python, Flask
-- **AI:** Google Gemini API (`google-generativeai` SDK)
+- **AI:** Groq-Meta LLM 
 - **Vector DB:** ChromaDB (replaceable with FAISS)
 
 ## Project Structure
@@ -29,7 +29,7 @@ mediscribe-ai/
 │   │   ├── store.py        # POST /api/store
 │   │   └── generate.py     # POST /api/generate-summary
 │   ├── services/
-│   │   ├── llm_service.py      # Gemini API
+│   │   ├── llm_service.py      # Groq API 
 │   │   ├── vector_service.py   # ChromaDB
 │   │   └── prompt_templates.py
 │   └── vector_db/
@@ -67,7 +67,7 @@ mediscribe-ai/
    copy .env.example .env   # Windows (run from backend/)
    # cp .env.example .env   # macOS/Linux
    ```
-   Edit `.env` and add your `GEMINI_API_KEY` from [Google AI Studio](https://aistudio.google.com/apikey).
+   Edit `.env` and add your `Groq_API` from [Groq](https://groq.com/).
 
 5. **Run the app:**
    ```bash
@@ -80,7 +80,7 @@ mediscribe-ai/
 1. Doctor submits patient input (symptoms, reports, observations)
 2. Data is stored in the vector database (embedded and indexed)
 3. Relevant data is retrieved from the vector database
-4. Google Gemini generates a structured clinical summary from retrieved data
+4. Groq-Meta LLM generates a structured clinical summary from retrieved data
 
 ## API Endpoints
 
