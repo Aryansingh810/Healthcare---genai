@@ -1,8 +1,4 @@
-"""
-MediScribe AI - LLM Service (Groq)
-Handles all Groq API interactions via HTTP.
-Swap provider by replacing this module - no other code changes needed.
-"""
+
 
 import json
 from typing import Optional
