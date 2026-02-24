@@ -1,7 +1,4 @@
-"""
-MediScribe AI - Generate Summary Route
-Retrieves data from vector DB, passes to LLM, returns clinical summary and PDF path.
-"""
+
 
 import uuid
 from datetime import datetime
