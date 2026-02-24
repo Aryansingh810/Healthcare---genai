@@ -1,8 +1,4 @@
-"""
-MediScribe AI - Prompt Templates
-Centralized prompts for consistent, professional medical summaries.
-Modify here to adjust output format or tone.
-"""
+"
 
 # System prompt instructs the model on its role and behavior
 SYSTEM_PROMPT = """You are a clinical documentation assistant.
