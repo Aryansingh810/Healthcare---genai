@@ -1,9 +1,4 @@
-"""
-MediScribe AI - Vector Database Service (ChromaDB)
-Stores and retrieves patient data using embeddings.
-Uses ChromaDB's default embedding function (no extra deps).
-Swap for FAISS by implementing same interface in a new module.
-"""
+
 
 import uuid
 import chromadb
